@@ -1,0 +1,2 @@
+// 特定の場所にボタンを動的に表示するためのもの
+$('.favorite-<%= @favorite.book_id %>').html("<%= j(render 'favorites/btn',  book: @favorite.book ) %>")
