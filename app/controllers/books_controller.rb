@@ -8,8 +8,22 @@ class BooksController < ApplicationController
   end
 
   def index
-    @books = Book.all
+    to = Time.current.at_end_of_day
+    #今日の23:59:59のこと
+    from = (to - 6.day).at_beginning_of_day
+    #今日から6日前にさかのぼる、その日の0:00:00にする
+    @books = Book.includes(:favorited_users).
+    #本と本にいいねした人達のデータを取ってくる
+      sort_by {|x|
+        x.favorited_users.includes(:favorites).where(created_at: from...to).size
+      }.reverse
+    #sort_by:どの順番で並べるか、`x` は1冊の本のこと
+    #本(x)に「いいね」したユーザーを集める
+    #その中から「いいねした時間が過去1週間」のものだけ選ぶ
+    #.size → その数を数える（つまり「過去1週間のいいねの数」）
+    #.reverse を使うと、多い順（いいねが多い本が上に）になる
     @book = Book.new
+
   end
 
   def create
