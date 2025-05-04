@@ -1,11 +1,7 @@
 <div class="container">
-  <div class="left-button">
-    <%= link_to "ユーザー一覧に戻る", users_path, class:"btn btn-info" %>
-  </div>
-
-  <% @entries.each do |e| %>
+<% @entries.each do |e| %>
     <% unless e.user == current_user %>
-    <h2><%= e.user.name %>さんとのチャットルーム</h2>
+    <h2><%= e.user.name %>さんとのチャット</h2>
     <% end %>
   <% end %>
 
@@ -33,9 +29,8 @@
 
     <div class="posts">
       <%= form_with model: @message, local: false do |f| %>
-        <%= f.text_field :content, placeholder: "140字以内でメッセージを入力してください", size: 70, class: "form-text-field" %>
+        <%= f.text_field :content, class: "form-text-field", id: "message_content" %>
         <%= f.hidden_field :room_id, value: @room.id %>
-        <%= f.submit "投稿", class: "form-submit" %>
       <% end %>
     </div>
   </div>
